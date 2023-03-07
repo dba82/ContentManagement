@@ -1,14 +1,16 @@
 
+<div>	
 <button (click)="save()">speichern</button> 
 <button (click)="toggleEdit()">{{edit ? 'Vorschau' : 'Bearbeiten'}}</button>
 <!--<button>Liste</button>
 <section>
 	<div *ngFor=""></div>
 </section>	-->
-<section [class]="{hidden: !edit}">
+</div>
+<section  [class]="{hidden: !edit, edit:true}">
 	<input [(ngModel)]="content.title" [ngModelOptions]="{standalone:true}" placeholder="Titel im System">
 	<input type="file" (change)="getDataURI($event)">
-	<img style="height: 6cm;" [src]="content.mainImage" #imgPreviewElement>	
+	<img style="height: 6cm; align-self:center" [src]="content.mainImage" #imgPreviewElement>	
 	<h1 #h1 [innerHTML]="content.heading" contenteditable (blur)="content.heading = h1.innerHTML" ></h1>
 	<section #teaserElement [innerHTML]="content.teaser"></section>
 	<main #mainElement style="height: 50vh;"[innerHTML]="content.main" ></main>
@@ -28,11 +30,11 @@
 		</table>
 	</section>
 </section>	
-<section [class]="{hidden: edit}">
+<section [class]="{hidden: edit, preview: true}" >
 
 	<img style="height: 6cm;" [src]="content.mainImage">	
 	<h1  [innerHTML]="content.heading"></h1>
-	<section  [innerHTML]="content.teaser"></section>
+	<section  [innerHTML]="content.teaser" class="teaser"></section>
 	<main  [innerHTML]="content.main" ></main>
 	<section>
 		<table class="massnahmen">

@@ -11,3 +11,25 @@
 section.hidden{
 	display:none;
 }
+
+section.preview .teaser{
+	color: grey;
+}
+
+
+
+section.preview .massnahmen{
+	border: 1px solid black;
+	width: 50%;
+}
+
+section.preview .massnahmen td{
+	border:none;
+}
+section.preview > img{
+	float: right;
+}
+section.edit:not(.hidden){
+	display:flex; 
+	flex-direction:column;
+}
