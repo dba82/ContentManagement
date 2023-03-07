@@ -6,6 +6,7 @@
 	<div *ngFor=""></div>
 </section>	-->
 <section [class]="{hidden: !edit}">
+	<input [(ngModel)]="content.title" [ngModelOptions]="{standalone:true}" placeholder="Titel im System">
 	<input type="file" (change)="getDataURI($event)">
 	<img style="height: 6cm;" [src]="content.mainImage" #imgPreviewElement>	
 	<h1 #h1 [innerHTML]="content.heading" contenteditable (blur)="content.heading = h1.innerHTML" ></h1>

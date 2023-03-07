@@ -25,7 +25,7 @@ export class AppComponent implements AfterViewInit {
 
   //3 Stunden 16:10 - 19:10
 
-  
+
    constructor() { }
    getDataURI(evt:Event) {
     const tgt = evt.target
@@ -110,6 +110,7 @@ toggleEdit(){
       mainImage: "",
       massnahmen: ([] as any[]),
       createdAt: (undefined as Date|undefined),
-      lastModifiedAt: (undefined as Date|undefined)
+      lastModifiedAt: (undefined as Date|undefined),
+      title: (undefined as string|undefined)
     }
 }
