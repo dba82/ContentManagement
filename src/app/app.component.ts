@@ -14,7 +14,7 @@ import de from 'suneditor/src/lang/de'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
-  public edit=true;
+  public edit=false;
   public teaserEditor:any;
   public mainEditor:any;
   @ViewChild('imgPreviewElement') public imgPreviewElement : ElementRef | undefined;
@@ -27,14 +27,19 @@ export class AppComponent implements AfterViewInit {
 
 
    constructor() { }
-   getDataURI(evt:Event) {
+   getDataURI(evt:Event, mainOrContact:string) {
     const tgt = evt.target
     const files = (tgt as any).files;
         if (FileReader && files && files.length) {
         const fr = new FileReader();
         fr.onload = () =>{
-            (this.imgPreviewElement!.nativeElement as any).src = fr.result;
-            this.content.mainImage = fr.result! as string;
+            //(this.imgPreviewElement!.nativeElement as any).src = fr.result;
+            if (mainOrContact === 'main'){
+              this.content.mainImage = fr.result! as string;
+            }
+            if (mainOrContact === 'contact'){
+              this.content.contact.image = fr.result! as string;
+            }
         }
         fr.readAsDataURL(files[0]);
     }
@@ -57,10 +62,10 @@ toggleEdit(){
   });
      this.teaserEditor = suneditor.create(this.teaserElement?.nativeElement, {
        plugins: [font, list, blockquote, link],
-       mode: 'balloon',
+       mode: 'classic',
        linkNoPrefix: true,
        buttonList: [
-           ['link']
+           ['removeFormat']
        ],
        lang: de
    })
@@ -75,12 +80,13 @@ toggleEdit(){
       this.content.main = this.mainEditor.getContents();
       this.content.createdAt = this.content.createdAt || new Date();
       this.content.lastModifiedAt = new Date();
-      localStorage.setItem('content', JSON.stringify(this.content));
+      localStorage.setItem('angebote', JSON.stringify(this.angebote));
       console.log(this.content);
     }
     
     load(){
-      this.content = localStorage.getItem('content') ? JSON.parse(localStorage.getItem('content')!) : this.content;
+      this.angebote = localStorage.getItem('angebote') ? JSON.parse(localStorage.getItem('angebote')!) : this.angebote;
+      this.content = this.angebote[0];
     }
 
     addMassnahme(){
@@ -89,7 +95,33 @@ toggleEdit(){
         name: "",
         gewichtung: ""
       }]
-
+    }
+    pickAngebot(i:number){
+      this.content = this.angebote[i];
+      this.teaserEditor.setContents(this.content.teaser)
+      this.mainEditor.setContents(this.content.main)
+    }
+    addAngebot(){
+      this.angebote.push(      {
+        heading: "",
+        teaser: "",
+        main: "",
+        mainImage: "",
+        massnahmen: ([] as any[]),
+        createdAt: (undefined as Date|undefined),
+        lastModifiedAt: (undefined as Date|undefined),
+        title: (undefined as string|undefined),
+        contact:{
+          name: "",
+          position: "",
+          email: "",
+          phone: "",
+          image: ""
+        }
+      });
+      this.content = this.angebote[this.angebote.length-1]
+      this.teaserEditor.setContents(this.content.teaser)
+      this.mainEditor.setContents(this.content.main)
     }
 
     removeMassnahme(m:any){
@@ -101,16 +133,27 @@ toggleEdit(){
       }
     }
     ngOnInit(){
-      this.load()
+      this.load();
     }
-    content = {
-      heading: "Ein Vebrundsangebot",
-      teaser: "Ein TEaser für das Verbundsangebot",
-      main: "",
-      mainImage: "",
-      massnahmen: ([] as any[]),
-      createdAt: (undefined as Date|undefined),
-      lastModifiedAt: (undefined as Date|undefined),
-      title: (undefined as string|undefined)
-    }
+    angebote = [
+      {
+        heading: "",
+        teaser: "",
+        main: "",
+        mainImage: "",
+        massnahmen: ([] as any[]),
+        createdAt: (undefined as Date|undefined),
+        lastModifiedAt: (undefined as Date|undefined),
+        title: (undefined as string|undefined),
+        contact:{
+          name: "",
+          position: "",
+          email: "",
+          phone: "",
+          image: ""
+        }
+      }
+    ]
+    content = this.angebote[0];
+    selection=false;
 }

@@ -1,16 +1,26 @@
 
 <div>	
-<button (click)="save()">speichern</button> 
-<button (click)="toggleEdit()">{{edit ? 'Vorschau' : 'Bearbeiten'}}</button>
-<!--<button>Liste</button>
-<section>
-	<div *ngFor=""></div>
-</section>	-->
+<button style="position: absolute;left: 20px;" (click)="selection=!selection">{{selection ? '▲' : '▼'}}</button> 
+<button *ngIf="selection" (click)="save()">speichern</button> 
+<button *ngIf="selection" (click)="toggleEdit()">{{edit ? 'Vorschau' : 'Bearbeiten'}}</button>
+<ul *ngIf="selection" id="angebote">
+	<li *ngFor="let angebot of angebote; index as i;" (click)="pickAngebot(i)"
+	[class]="{active: angebot === content}">
+		{{angebot.title}}
+	</li>
+</ul>	
+<button *ngIf="selection" (click)="addAngebot()">+</button>
 </div>
+
 <section  [class]="{hidden: !edit, edit:true}">
-	<input [(ngModel)]="content.title" [ngModelOptions]="{standalone:true}" placeholder="Titel im System">
-	<input type="file" (change)="getDataURI($event)">
-	<img style="height: 6cm; align-self:center" [src]="content.mainImage" #imgPreviewElement>	
+	<details>
+		<summary>Metadaten</summary>
+		<p>Erstellungsdatum : {{content.createdAt | date: "dd. MM. YYYY, HH:mm"}}</p>
+		<p>Zuletzt geändert : {{content.lastModifiedAt | date: "dd. MM. YYYY, HH:mm"}}</p>
+	</details>
+	<input type="text" [(ngModel)]="content.title" [ngModelOptions]="{standalone:true}" placeholder="Titel im System">
+	<input type="file" (change)="getDataURI($event, 'main')">
+	<img style="height: 6cm; align-self:center; background-color: silver" alt="Hauptbild" [src]="content.mainImage" #imgPreviewElement>	
 	<h1 #h1 [innerHTML]="content.heading" contenteditable (blur)="content.heading = h1.innerHTML" ></h1>
 	<section #teaserElement [innerHTML]="content.teaser"></section>
 	<main #mainElement style="height: 50vh;"[innerHTML]="content.main" ></main>
@@ -29,6 +39,13 @@
 			</tbody>
 		</table>
 	</section>
+	<input type="text" [(ngModel)]="content.contact.name" [ngModelOptions]="{standalone:true}" placeholder="name">
+	<input type="text" [(ngModel)]="content.contact.position" [ngModelOptions]="{standalone:true}" placeholder="Position">
+	<input type="text" [(ngModel)]="content.contact.phone" [ngModelOptions]="{standalone:true}" placeholder="Telefon">
+	<input type="text" [(ngModel)]="content.contact.email" [ngModelOptions]="{standalone:true}" placeholder="Email">
+	<input type="file" (change)="getDataURI($event, 'contact')">
+	<img style="height: 6cm; align-self:center; background-color: silver" alt="Kontaktbild" [src]="content.contact.image" #contactImgPreviewElement>	
+
 </section>	
 <section [class]="{hidden: edit, preview: true}" >
 
@@ -47,4 +64,13 @@
 			</tbody>
 		</table>
 	</section>
+	<section style="margin-block: 3rem;padding:3rem; border:2px solid black;">
+		<img style="float:right; height:200px;"[src]="content.contact.image">
+		<h2>Ihr Kontakt</h2>
+		<p>{{content.contact.name}}</p>
+		<p>{{content.contact.position}}</p>
+		<p>{{content.contact.phone}}</p>
+		<p><a href="mailto:{{content.contact.email}}">{{content.contact.email}}</a></p>
+		
+	</section>	
 </section>	

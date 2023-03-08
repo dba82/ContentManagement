@@ -20,7 +20,7 @@ section.preview .teaser{
 
 section.preview .massnahmen{
 	border: 1px solid black;
-	width: 50%;
+	width: 100%;
 }
 
 section.preview .massnahmen td{
@@ -32,4 +32,45 @@ section.preview > img{
 section.edit:not(.hidden){
 	display:flex; 
 	flex-direction:column;
+}
+:host{
+	padding-inline: 10rem;
+	display:flex;
+	flex-direction: column;
+}
+
+button{
+	padding:1rem;
+	border:none;
+	background-color: orange;
+	color: white;
+}
+button:hover{
+
+	background-color: darkorange;
+	color: whitesmoke;
+}
+#angebote{
+	list-style: none;
+}
+#angebote li{
+	border-bottom: 1px solid grey;
+	padding: 1rem;
+}
+#angebote li.active{
+	background-color: orange;
+	color:white;
+
+}
+#angebote li:hover{
+	background-color: silver;
+}
+section.edit:not(.hidden){
+	display:flex;
+	flex-direction: column;
+}
+
+input[type="text"]{
+	height: 2rem;
+	padding:.7rem;
 }
