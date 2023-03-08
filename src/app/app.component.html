@@ -1,15 +1,16 @@
 
 <div>	
-<button style="position: absolute;left: 20px;" (click)="selection=!selection">{{selection ? '▲' : '▼'}}</button> 
-<button *ngIf="selection" (click)="save()">speichern</button> 
-<button *ngIf="selection" (click)="toggleEdit()">{{edit ? 'Vorschau' : 'Bearbeiten'}}</button>
-<ul *ngIf="selection" id="angebote">
-	<li *ngFor="let angebot of angebote; index as i;" (click)="pickAngebot(i)"
-	[class]="{active: angebot === content}">
-		{{angebot.title}}
-	</li>
-</ul>	
-<button *ngIf="selection" (click)="addAngebot()">+</button>
+	<button style="position: absolute;left: 20px;" (click)="selection=!selection">{{selection ? '▲' : '▼'}}</button> 
+	<button *ngIf="selection" (click)="save()">speichern</button> 
+	<button *ngIf="selection" (click)="toggleEdit()">{{edit ? 'Vorschau' : 'Bearbeiten'}}</button>
+	<button *ngIf="selection" (click)="addAngebot()">+</button>
+
+	<ul *ngIf="selection" id="angebote">
+		<li *ngFor="let angebot of angebote; index as i;" (click)="pickAngebot(i)"
+		[class]="{active: angebot === content}">
+			{{angebot.title}}
+		</li>
+	</ul>	
 </div>
 
 <section  [class]="{hidden: !edit, edit:true}">
